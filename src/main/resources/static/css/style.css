@@ -1,0 +1,11 @@
+#hero {
+	background-image: url("../images/homepage-img/sfondo-pizzeria.jfif"); 
+	height: 80vh; 
+	background-size: cover; 
+	background-position: center;
+}
+
+#detail-img {
+	height: 400px; 
+	width: 500px;
+}

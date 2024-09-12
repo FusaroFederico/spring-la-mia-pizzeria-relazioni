@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:insert="~{fragments\fragments :: head}">
+	</head>
+	<body>
+		<header th:replace="~{fragments\fragments :: header}">
+		</header>
+		
+		<main class="container">
+			<div class="row m-4 mx-auto justify-content-md-center">
+				<div class="row bg-dark p-2 px-3 mb-3">
+					<div class="col-6 d-flex align-items-center text-start">
+						<span class="text-light fs-5 me-2">Filtra pizze per nome:</span>
+					
+						<form class="d-flex" role="search" method="GET" th:action="@{/pizzas}">
+						        <input class="form-control me-2" type="search" placeholder="nome..." aria-label="Search" name="name">
+						        <button class="btn btn-outline-warning">Cerca</button>
+						</form>
+					</div>
+					<div class="col-6 text-end">
+						<a class="btn btn-primary" th:href="@{/pizzas/create}" role="button">Aggiungi Pizza</a>
+					</div>
+				</div>
+				<div class="col-8 text-center mb-3">
+					<h2 class="my-3">Le Nostre Pizze</h2>
+					
+					<!-- Alert message -->
+					<th:block th:if="${successMessage != null}">
+						<div th:replace="~{fragments\fragments :: successAlert(${successMessage}, ${alertClass})}"></div>
+					</th:block>
+					<!-- /Alert message -->
+					
+					<th:block th:if="${pizzas.size() > 0}">
+						<div class="row">
+								<!-- Card -->
+		                        <div th:each="pizza : ${pizzas}" class="col-md-4 mb-3">
+									<div class="card">
+										<a th:href="@{'/pizzas/' + ${pizza.id}}" class="text-decoration-none">
+			                                <img th:src="@{${pizza.photoUrl}}" class="card-img-top img-fluid"
+			                                    alt="foto della pizza" style="height: 200px;">
+										</a>
+		                                <div class="card-body">
+		                                    <h5 class="card-title" th:text="${pizza.name}">Pizza Margherita</h5>
+											<p class="card-text fw-bold" th:text="${'€ ' + pizza.getStandardPrice()}">€8.00</p>
+											<div class="d-flex justify-content-between">
+												
+														<!-- Edit button -->
+													<a th:href="@{/pizzas/edit/{id}(id = ${pizza.id})}" role="button" 
+																	class="btn btn-primary">Modifica</a>
+														<!-- /Edit button -->
+														
+													<!-- Button trigger modal -->
+													<button type="button" class="btn btn-danger" data-bs-toggle="modal" th:data-bs-target="${'#deleteModal' + pizza.id}">
+													  		Elimina
+													</button>
+													<!-- /Button trigger modal -->
+													<!-- Modal -->
+													<div class="modal fade" th:id="${'deleteModal' + pizza.id}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+													  <div class="modal-dialog modal-dialog-centered">
+													    <div class="modal-content">
+													      <div class="modal-header">
+													        <h1 class="modal-title fs-5" id="deleteModalLabel">
+																	Sei sicuro/a di voler eliminare "[[${pizza.name}]]" ?</h1>
+													        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+													      </div>
+													      <div class="modal-body">
+													        	Cliccando su conferma eliminerai permanentemente la pizza "[[${pizza.name}]]" dal menù.
+													      </div>
+													      <div class="modal-footer">
+													        	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+																<!-- Delete form -->
+																<form method="post" th:action="@{/pizzas/delete/{id}(id = ${pizza.id})}">
+																	<button type="submit" class="btn btn-danger">Conferma</button>
+																</form>
+																<!-- /Delete form -->
+													      </div>
+													    </div>
+													  </div>
+													</div>
+													<!-- /Modal -->
+											</div>
+		                                </div>
+									</div>
+		                        </div>
+								<!-- /Card -->
+						</div>	
+					</th:block>
+					
+					<th:block th:unless="${pizzas.size() > 0}">
+						<h4 class="my-4">
+							Nessuna pizza trovata che contiene "[[ ${name} ]]" nel nome.
+						</h4>
+					</th:block>
+				</div>
+			</div>
+		</main>
+		
+		<footer th:replace="~{fragments\fragments :: footer}">
+		</footer>
+		
+		<div th:replace="~{fragments\fragments :: scripts}"></div>
+	</body>
+</html>

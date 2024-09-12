@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:fragment="head">
+			<!-- Required meta tags -->
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			
+			<!-- Bootstrap CSS -->
+			<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}"/>
+			
+			<!-- My CSS -->
+			<link th:rel="stylesheet" th:href="@{/css/style.css}"/>
+			
+			<title>[[${title}]]</title>
+		</th:block>
+	</head>
+	<body>
+		
+		<header th:fragment="header">
+			<!-- Navbar -->
+	        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	            <div class="container">
+	                <span class="navbar-brand">PizzaRotondo</span>
+	                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+	                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+	                    <span class="navbar-toggler-icon"></span>
+	                </button>
+	                <div class="collapse navbar-collapse" id="navbarNav">
+	                    <ul class="navbar-nav ms-auto">
+	                        <li class="nav-item">
+	                            <a class="nav-link" th:classappend="${title == 'Homepage' ? 'active' : 'inactive'}" href="/">Home</a>
+	                        </li>
+	                        <li class="nav-item">
+	                            <a class="nav-link" th:classappend="${title == 'Menù' ? 'active' : 'inactive'}" href="/pizzas">Menu</a>
+	                        </li>
+	                        <li class="nav-item">
+	                            <a class="nav-link" href="/#chi-siamo">Chi Siamo</a>
+	                        </li>
+	                        <li class="nav-item">
+	                            <a class="nav-link" href="/#contatti">Contatti</a>
+	                        </li>
+	                    </ul>
+	                </div>
+	            </div>
+	        </nav>
+			<!-- /Navbar -->
+		</header>
+		
+		<!-- Success alert message -->
+		<th:block th:fragment="successAlert(message, alertClass)">
+			<div class="alert alert-dismissible fade show d-flex align-items-center" th:classappend="${alertClass}" role="alert">
+				  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill flex-shrink-0 me-2" viewBox="0 0 16 16">
+				  		<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+				  </svg>
+				  <div th:text="${message}"></div>
+				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</th:block>
+		<!-- /Success alert message -->
+		
+		<!-- Footer -->
+	    <footer th:fragment="footer" class="bg-dark text-white text-center py-4">
+	        <div class="container">
+	            <p class="mb-0">© 2024 PizzaRotondo. Tutti i diritti riservati.</p>
+	        </div>
+	    </footer>
+		
+		<!-- Scripts -->
+		<th:block th:fragment="scripts">
+			<!-- Bootstrap js -->
+			<script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+			<!-- My js -->
+			<script th:src="@{/js/main.js}"></script>
+		</th:block>
+	</body>
+</html>

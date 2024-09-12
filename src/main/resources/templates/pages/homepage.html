@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:insert="~{fragments\fragments :: head}">
+	</head>
+	<body>
+		<header th:replace="~{fragments\fragments :: header}">
+		</header>
+		
+		<main>
+			<!-- Hero Section -->
+	        <section id="hero" class="bg-image">
+	            <div class="container h-100 d-flex justify-content-center align-items-center">
+	                <div class="text-center text-white">
+	                    <h1 class="display-4 fw-bold">Benvenuti alla Pizzeria PizzaRotondo</h1>
+	                    <p class="lead">La miglior pizzeria di Monterotondo dal 2004</p>
+	                </div>
+	            </div>
+	        </section>
+			
+			<!-- Chi Siamo Section -->
+	        <section id="chi-siamo" class="bg-light py-5">
+	            <div class="container">
+	                <h2 class="text-center mb-5">Chi Siamo</h2>
+	                <div class="row">
+	                    <div class="col-md-6">
+	                        <img th:src="@{/images/homepage-img/arredamento-pizzeria.jpg}" class="img-fluid" alt="Chi Siamo">
+	                    </div>
+	                    <div class="col-md-6 d-flex flex-column justify-content-center">
+	                        <p>Dal 2004, PizzaRotondo serve la vera pizza monterotondese, preparata con ingredienti
+	                            freschi e di alta qualità. La nostra passione per la pizza è evidente in ogni boccone,
+	                            e il nostro obiettivo è regalarvi un'emozione ad ogni morso.</p>
+	                        <p>Vieni a trovarci e scopri perché siamo la pizzeria preferita dai nostri clienti!</p>
+	                    </div>
+	                </div>
+	            </div>
+	        </section>
+			
+			<!-- Contatti Section -->
+	        <section id="contatti" class="py-5">
+	            <div class="container">
+	                <h2 class="text-center mb-5">Contattaci</h2>
+	                <div class="row">
+	                    <div class="col-md-6">
+	                        <h5>Indirizzo</h5>
+	                        <p>Via Roma, 24, 00015 Monterotondo</p>
+	                        <h5>Telefono</h5>
+	                        <p>+39 06 906 0000</p>
+	                        <h5>Email</h5>
+	                        <p>info@pizzarotondo.it</p>
+	                    </div>
+	                    <div class="col-md-6">
+	                        <form>
+	                            <div class="mb-3">
+	                                <label for="name" class="form-label">Nome</label>
+	                                <input type="text" class="form-control" id="name" placeholder="Il tuo nome">
+	                            </div>
+	                            <div class="mb-3">
+	                                <label for="email" class="form-label">Email</label>
+	                                <input type="email" class="form-control" id="email" placeholder="name@example.com">
+	                            </div>
+	                            <div class="mb-3">
+	                                <label for="message" class="form-label">Messaggio</label>
+	                                <textarea class="form-control" id="message" rows="3"
+	                                    placeholder="Il tuo messaggio"></textarea>
+	                            </div>
+	                            <button type="" class="btn btn-primary">Invia</button>
+	                        </form>
+	                    </div>
+	                </div>
+	            </div>
+	        </section>
+		</main>
+		
+		<footer th:replace="~{fragments\fragments :: footer}">
+		</footer>
+		
+		<div th:replace="~{fragments\fragments :: scripts}"></div>
+	</body>
+</html>

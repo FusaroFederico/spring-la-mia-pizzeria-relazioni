@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:insert="~{fragments\fragments :: head}">
+	</head>
+	<body>
+		<header th:replace="~{fragments\fragments :: header}">
+		</header>
+		
+		<main class="container mt-3 mb-5 mx-auto justify-content-center">
+			
+			<th:block th:if="${!(pizza == null)}" th:object="${pizza}">
+				<div class="col-8 mx-auto text-center">
+					<h1 class="mb-3 py-2" th:text="*{name}">SHOW</h1>
+					<img class="img-fluid img-thumbnail" th:alt="'pizza image representing our ' + *{name}" 
+						 id="detail-img" th:src="@{*{photoUrl}}">
+					</img>
+					<p class="mb-3 py-2 fs-6 fw-semibold">
+						Descrizione: 
+						<span class="fst-italic" th:text="' ' + *{description}"></span>
+					</p>
+					<th:block th:if="${ pizza.createdAt != null }">
+						<p class="mb-3 fs-6 fw-semibold">
+							Inserita il: [[ ${pizza.getFormattedCreatedAt()} ]]
+						</p>
+					</th:block>
+					<th:block th:if="${ pizza.updatedAt != null }">
+						<p class="mb-3 fs-6 fw-semibold">
+							Ultima modifica: [[ ${pizza.getFormattedUpdatedAt()} ]]
+						</p>
+					</th:block>
+				</div>
+				<!-- Back and order buttons -->
+				<div class="col-8 mx-auto d-flex justify-content-between">
+					<a class="btn btn-primary" href="/pizzas" role="button">Torna al menù</a>
+					<a class="btn btn-primary" href="" role="button">Ordina</a>
+				</div>
+				<!-- /Back and order buttons -->
+			</th:block>
+			
+			<th:block th:unless="${!(pizza == null)}">
+				<h2 class="text-center py-3 mb-3">Dettagli non disponibili per questa pizza.</h2>
+				<div class="col-8 mx-auto d-flex justify-content-center">
+					   <a class="btn btn-primary" href="/pizzas" role="button">Torna al menù</a>
+				</div>
+			</th:block>
+			
+		</main>
+		
+		<footer th:replace="~{fragments\fragments :: footer}">
+		</footer>
+		
+		<div th:replace="~{fragments\fragments :: scripts}"></div>
+	</body>
+</html>
