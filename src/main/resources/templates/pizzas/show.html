@@ -9,6 +9,7 @@
 		<main class="container mt-3 mb-5 mx-auto justify-content-center">
 			
 			<th:block th:if="${!(pizza == null)}" th:object="${pizza}">
+				<!-- pizza details-->
 				<div class="col-8 mx-auto text-center">
 					<h1 class="mb-3 py-2" th:text="*{name}">SHOW</h1>
 					<img class="img-fluid img-thumbnail" th:alt="'pizza image representing our ' + *{name}" 
@@ -18,17 +19,36 @@
 						Descrizione: 
 						<span class="fst-italic" th:text="' ' + *{description}"></span>
 					</p>
-					<th:block th:if="${ pizza.createdAt != null }">
-						<p class="mb-3 fs-6 fw-semibold">
-							Inserita il: [[ ${pizza.getFormattedCreatedAt()} ]]
-						</p>
-					</th:block>
-					<th:block th:if="${ pizza.updatedAt != null }">
-						<p class="mb-3 fs-6 fw-semibold">
-							Ultima modifica: [[ ${pizza.getFormattedUpdatedAt()} ]]
-						</p>
-					</th:block>
+					<p class="mb-3 fs-6 fw-semibold" th:if="${ pizza.createdAt != null }">
+						Inserita il: [[ ${pizza.getFormattedCreatedAt()} ]]
+					</p>
+					<p class="mb-3 fs-6 fw-semibold" th:if="${ pizza.updatedAt != null }">
+						Ultima modifica: [[ ${pizza.getFormattedUpdatedAt()} ]]
+					</p>
 				</div>
+				<!-- /pizza details-->
+				<!-- special offers -->
+				<div class="col-8 mx-auto text-center bg-info-subtle py-2 mb-3">
+					<h2> Offerte Speciali </h2>
+					<table th:if="${ !pizza.specialOffers.isEmpty() }" class="table table-primary table-striped">
+						<thead>
+							<tr>
+								<th>Nome offerta</th>
+								<th>Periodo</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each=" offer : ${pizza.specialOffers}">
+								<td>[[${offer.title}]]</td>
+								<td>Dal [[${offer.startDate}]] al [[${offer.endDate}]]</td>
+							</tr>
+						</tbody>
+					</table>
+					<p th:unless="${ !pizza.specialOffers.isEmpty() }">
+						Non ci sono offerte speciali relative a questa pizza.
+					</p>
+				</div>
+				<!-- /special offers -->
 				<!-- Back and order buttons -->
 				<div class="col-8 mx-auto d-flex justify-content-between">
 					<a class="btn btn-primary" href="/pizzas" role="button">Torna al menù</a>
