@@ -2,15 +2,18 @@ package com.example.demo.pizzeria.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.DecimalMax;
@@ -57,6 +60,9 @@ public class Pizza {
 	@DecimalMax(value = "100.00", message = "il prezzo non può essere superiore a 100")
 	@Column(name="price", nullable=false)
 	private Double price;
+	
+	@OneToMany(mappedBy = "pizza", cascade = { CascadeType.REMOVE })
+	private List<SpecialOffer> specialOffers;
 	
 	@Transient
 	private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
@@ -123,5 +129,12 @@ public class Pizza {
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+	public List<SpecialOffer> getSpecialOffers() {
+		return specialOffers;
+	}
+	public void setSpecialOffers(List<SpecialOffer> specialOffers) {
+		this.specialOffers = specialOffers;
+	}
+	
 	
 }
