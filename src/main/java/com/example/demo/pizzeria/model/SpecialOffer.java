@@ -2,6 +2,7 @@ package com.example.demo.pizzeria.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,6 +15,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "special_offers")
@@ -23,12 +29,18 @@ public class SpecialOffer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@NotNull
 	@Column(name = "start_date", nullable = false)
 	private LocalDate startDate; 
 	
+	@NotNull
+	@Future
 	@Column(name = "end_date", nullable = false)
 	private LocalDate endDate;
 	
+	@NotEmpty(message = "non può essere vuoto")
+	@NotNull
+	@Size(min=3, max=50, message = "il titolo deve avere almeno 3 e massimo 50 caratteri")
 	@Column(name = "title", nullable = false)
 	private String title;
 	
@@ -44,6 +56,22 @@ public class SpecialOffer {
 	@JoinColumn(name = "pizza_id", nullable = false)
 	private Pizza pizza;
 
+	@Transient
+	private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	
+	// date formatted 
+	public String getFormattedStartDate(){
+		if(startDate != null) {
+			return startDate.format(dateFormatter);
+		}
+		return "";
+	}
+	public String getFormattedEndDate(){
+		if(endDate != null) {
+			return endDate.format(dateFormatter);
+		}
+		return "";
+	}
 	
 	// getters and setters
 	public Integer getId() {
