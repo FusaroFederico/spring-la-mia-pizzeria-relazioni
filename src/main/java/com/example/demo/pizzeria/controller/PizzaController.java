@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.pizzeria.model.Pizza;
+import com.example.demo.pizzeria.model.SpecialOffer;
 import com.example.demo.pizzeria.service.PizzaService;
 
 import jakarta.validation.Valid;
@@ -24,7 +25,7 @@ import jakarta.validation.Valid;
 public class PizzaController {
 	
 	@Autowired
-	private PizzaService service; 
+	private PizzaService pizzaService; 
 	
 	@GetMapping
 	public String index(Model model, @RequestParam(name = "name", required = false) String name) {
@@ -34,10 +35,10 @@ public class PizzaController {
 		
 		if ( name!=null && !name.isEmpty()) {
 			model.addAttribute("name", name);
-			pizzas = service.findListByName(name);
+			pizzas = pizzaService.findListByName(name);
 			
 		} else {
-			pizzas = service.findAllSortedByName();
+			pizzas = pizzaService.findAllSortedByName();
 		}
 		
 		model.addAttribute("pizzas", pizzas);
@@ -49,10 +50,24 @@ public class PizzaController {
 	public String pizzaDetails(Model model, @PathVariable("id") Integer pizzaId) {
 		model.addAttribute("title", "Dettagli Pizza");
 		
-		model.addAttribute("pizza", service.getById(pizzaId));
+		model.addAttribute("pizza", pizzaService.getById(pizzaId));
 		return "/pizzas/show";
 	}
 	
+	// GET -> create specialOffer relative to specific pizza
+	@GetMapping("/{id}/specialOffer/create")
+	public String createSpecialOffer(Model model, @PathVariable("id") Integer pizzaId) {
+		
+		model.addAttribute("title", "Crea nuova Offerta Speciale");
+		
+		SpecialOffer specialOffer = new SpecialOffer();
+		specialOffer.setPizza(pizzaService.getById(pizzaId));
+		model.addAttribute("specialOffer", specialOffer);
+		
+		return "/specialOffers/create";
+	}
+	
+	// CREATE
 	@GetMapping("/create")
 	public String create(Model model) {
 		model.addAttribute("title", "Aggiungi Pizza");
@@ -70,7 +85,7 @@ public class PizzaController {
 			return "/pizzas/create";
 		}
 		
-		service.create(formPizza);
+		pizzaService.create(formPizza);
 		
 		redirectAttributes.addFlashAttribute("successMessage", "La pizza '" + formPizza.getName() + "' è stata aggiunta al menù.");
 		redirectAttributes.addFlashAttribute("alertClass", "alert-success");
@@ -82,7 +97,7 @@ public class PizzaController {
 	public String edit(@PathVariable("id") Integer id, Model model) {
 		
 		model.addAttribute("title", "Modifica Pizza");
-		model.addAttribute("pizza", service.getById(id));
+		model.addAttribute("pizza", pizzaService.getById(id));
 		
 		return "/pizzas/edit";
 	}
@@ -97,7 +112,7 @@ public class PizzaController {
 			return "/pizzas/edit";
 		}
 		
-		service.update(updatedPizza);
+		pizzaService.update(updatedPizza);
 		
 		redirectAttributes.addFlashAttribute("successMessage", "La pizza '" + updatedPizza.getName() + "' è stata aggiornata con successo.");
 		redirectAttributes.addFlashAttribute("alertClass", "alert-success");
@@ -108,9 +123,9 @@ public class PizzaController {
 	@PostMapping("/delete/{id}")
 	public String delete(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
 		
-		String pizzaName = service.getById(id).getName();
+		String pizzaName = pizzaService.getById(id).getName();
 		
-		service.deleteById(id);
+		pizzaService.deleteById(id);
 		
 		redirectAttributes.addFlashAttribute("successMessage", "La pizza '" + pizzaName + "' è stata eliminata dal menù.");
 		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
