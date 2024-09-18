@@ -13,6 +13,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -63,6 +66,13 @@ public class Pizza {
 	
 	@OneToMany(mappedBy = "pizza", cascade = { CascadeType.REMOVE })
 	private List<SpecialOffer> specialOffers;
+	
+	@ManyToMany
+	@JoinTable(
+			  name = "ingredient_pizza", 
+			  joinColumns = @JoinColumn(name = "pizza_id"), 
+			  inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
+	private List<Ingredient> ingredients;
 	
 	@Transient
 	private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
@@ -134,6 +144,12 @@ public class Pizza {
 	}
 	public void setSpecialOffers(List<SpecialOffer> specialOffers) {
 		this.specialOffers = specialOffers;
+	}
+	public List<Ingredient> getIngredients() {
+		return ingredients;
+	}
+	public void setIngredients(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
 	}
 	
 	
