@@ -8,6 +8,12 @@
 		
 		<main class="container mt-3 mb-5 mx-auto justify-content-center">
 			
+			<!-- Alert message -->
+					<th:block th:if="${successMessage != null}">
+						<div class="col-8 mx-auto text-center" th:insert="~{fragments\fragments :: successAlert(${successMessage}, ${alertClass})}"></div>
+					</th:block>
+			<!-- /Alert message -->
+			
 			<th:block th:if="${!(pizza == null)}" th:object="${pizza}">
 				<!-- pizza details-->
 				<div class="col-8 mx-auto text-center">
@@ -15,7 +21,7 @@
 					<img class="img-fluid img-thumbnail" th:alt="'pizza image representing our ' + *{name}" 
 						 id="detail-img" th:src="@{*{photoUrl}}">
 					</img>
-					<p class="mb-3 py-2 fs-6 fw-semibold">
+					<p class="mb-3 fs-6 fw-semibold">
 						Descrizione: 
 						<span class="fst-italic" th:text="' ' + *{description}"></span>
 					</p>
@@ -28,19 +34,26 @@
 				</div>
 				<!-- /pizza details-->
 				<!-- special offers -->
-				<div class="col-8 mx-auto text-center bg-info-subtle py-2 mb-3">
+				<div class="col-8 mx-auto text-center bg-warning-subtle py-2 px-4 mb-3">
 					<h2> Offerte Speciali </h2>
-					<table th:if="${ !pizza.specialOffers.isEmpty() }" class="table table-primary table-striped">
+					<table th:if="${ !pizza.specialOffers.isEmpty() }" class="table table-warning table-striped table-bordered">
 						<thead>
 							<tr>
 								<th>Nome offerta</th>
 								<th>Periodo</th>
+								<th>Azioni</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr th:each=" offer : ${pizza.specialOffers}">
-								<td>[[${offer.title}]]</td>
-								<td>Dal [[${offer.startDate}]] al [[${offer.endDate}]]</td>
+								<td class="align-middle"> [[${offer.title}]] </td>
+								<td class="align-middle">Dal [[ ${offer.getFormattedStartDate()} ]] al [[ ${offer.getFormattedEndDate()} ]]</td>
+								<td class="d-flex justify-content-center">
+									<a class="btn btn-success me-3" th:href="@{/specialOffers/edit/{id}(id = ${offer.id})}" role="button">Modifica</a>
+									<form method="post" th:action="@{/specialOffers/delete/{id}(id = ${offer.id})}">
+										<button class="btn btn-danger"  type="submit">Elimina</button>
+								    </form>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -52,7 +65,7 @@
 				<!-- Back and order buttons -->
 				<div class="col-8 mx-auto d-flex justify-content-between">
 					<a class="btn btn-primary" href="/pizzas" role="button">Torna al menù</a>
-					<a class="btn btn-primary" href="" role="button">Ordina</a>
+					<a class="btn btn-warning" th:href="@{/pizzas/{id}/specialOffer/create(id = ${pizza.id})}" role="button">Aggiungi offerta speciale</a>
 				</div>
 				<!-- /Back and order buttons -->
 			</th:block>
