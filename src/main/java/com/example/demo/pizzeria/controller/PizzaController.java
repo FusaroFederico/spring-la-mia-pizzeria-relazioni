@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.pizzeria.model.Pizza;
 import com.example.demo.pizzeria.model.SpecialOffer;
+import com.example.demo.pizzeria.service.IngredientService;
 import com.example.demo.pizzeria.service.PizzaService;
 
 import jakarta.validation.Valid;
@@ -26,6 +27,8 @@ public class PizzaController {
 	
 	@Autowired
 	private PizzaService pizzaService; 
+	@Autowired
+	private IngredientService ingredientService; 
 	
 	@GetMapping
 	public String index(Model model, @RequestParam(name = "name", required = false) String name) {
@@ -98,6 +101,7 @@ public class PizzaController {
 		
 		model.addAttribute("title", "Modifica Pizza");
 		model.addAttribute("pizza", pizzaService.getById(id));
+		model.addAttribute("ingredientsList", ingredientService.findAllSortedByName());
 		
 		return "/pizzas/edit";
 	}
@@ -105,10 +109,12 @@ public class PizzaController {
 	// post -> update()
 	@PostMapping("/edit/{id}")
 	public String update(@Valid @ModelAttribute("pizza") Pizza updatedPizza, 
+						 Model model,
 						 BindingResult bindingResult,
 						 RedirectAttributes redirectAttributes) {
 		
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("ingredientsList", ingredientService.findAllSortedByName());
 			return "/pizzas/edit";
 		}
 		
