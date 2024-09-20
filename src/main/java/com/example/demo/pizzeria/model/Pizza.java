@@ -67,11 +67,10 @@ public class Pizza {
 	@OneToMany(mappedBy = "pizza", cascade = { CascadeType.REMOVE })
 	private List<SpecialOffer> specialOffers;
 	
-	@ManyToMany
-	@JoinTable(
-			  name = "ingredient_pizza", 
-			  joinColumns = @JoinColumn(name = "pizza_id"), 
-			  inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name = "ingredient_pizza", 
+			   joinColumns = @JoinColumn(name = "pizza_id"), 
+			   inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
 	private List<Ingredient> ingredients;
 	
 	@Transient
