@@ -21,9 +21,13 @@
 					<img class="img-fluid img-thumbnail" th:alt="'pizza image representing our ' + *{name}" 
 						 id="detail-img" th:src="@{*{photoUrl}}">
 					</img>
-					<p class="mb-3 fs-6 fw-semibold">
+					<p class="mb-1 fs-6 fw-semibold">
 						Descrizione: 
 						<span class="fst-italic" th:text="' ' + *{description}"></span>
+					</p>
+					<p class="mb-3 fs-6 fw-semibold">
+						Ingredienti: 
+						<span class="fst-italic" th:each="ingredient : *{ingredients}"> [[ ${ingredient.name }]], </span>
 					</p>
 					<p class="mb-3 fs-6 fw-semibold" th:if="${ pizza.createdAt != null }">
 						Inserita il: [[ ${pizza.getFormattedCreatedAt()} ]]
