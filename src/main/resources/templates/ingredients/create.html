@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:insert="~{fragments\fragments :: head}">
+	</head>
+	<body>
+		<header th:replace="~{fragments\fragments :: header}">
+		</header>
+		
+		<main class="container">
+			<div class="row my-4 py-4 mx-auto justify-content-md-center">
+				<div class="col-4 text-center mb-3">
+					<h1 class="mb-3">Aggiungi nuovo ingrediente</h1>
+					<form 
+						id="ingredient-form" 
+						method="POST" 
+						th:action="@{/ingredients/create}" 
+						th:object="${ingredient}"
+						>
+						
+						<div class="mb-3">
+							  <label for="ingredient-name" class="form-label fw-medium">Nome dell'ingrediente:</label>
+							  <input type="text" class="form-control" id="ingredient-name" placeholder="mozzarella" th:field="*{name}"
+							  			 th:errorClass="is-invalid">
+							  <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+									<ul>
+										<li th:each="err : ${#fields.errors('name')}" th:text="${err}"></li>
+									</ul>
+							  </div>
+						</div>
+						
+						<div class="mb-3">
+							<p class="fs-6 fw-medium mb-1">Quali pizze lo utilizzano?</p>
+							<div class="" th:each=" pizza : ${pizzasList}">
+									  <input type="checkbox" class="form-check-input" th:id="${'pizza_' + pizza.id}"
+									  				th:value="${pizza.id}" th:field="*{pizzas}" >
+									  <label class="form-check-label" th:for="${'pizza' + pizza.id}" th:text="${pizza.name}"></label>
+							</div>
+							
+						</div>
+						
+						<div class="mb-3">
+							<input class="form-check-input" type="checkbox" value="" id="ingredient-availability" th:field="*{availability}">
+							  <label class="form-check-label" for="ingredient-availability">
+							    Disponibile ?
+							  </label>
+						</div>
+						<div class="mb-3 d-flex justify-content-between pt-2">
+							<button type="reset" class="btn btn-warning">Pulisci campi</button>
+							<button type="submit" class="btn btn-primary">Aggiungi ingrediente</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</main>
+		
+		<footer th:replace="~{fragments\fragments :: footer}">
+		</footer>
+		
+		<div th:replace="~{fragments\fragments :: scripts}"></div>
+	</body>
+</html>
