@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PreRemove;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -46,6 +47,15 @@ public class Ingredient {
 	@ManyToMany(mappedBy = "ingredients")
 	private List<Pizza> pizzas;
 
+	// Pre-remove method
+	@PreRemove
+	public void removePizzaAssociation() {
+		for ( Pizza pizza : this.pizzas) {
+			pizza.getIngredients().remove(this);
+		}
+	}
+	
+	// Getters and Setters
 	public Integer getId() {
 		return id;
 	}
