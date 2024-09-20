@@ -40,6 +40,16 @@
 									</ul>				
 							  </div>
 						</div>
+						<!-- Ingredients -->
+						<div class="row row-cols-5 mb-3">
+							<p class="fs-6 fw-medium col-12">Seleziona gli ingredienti:</p>
+							<div class="col" th:each=" ingredient : ${ingredientsList}">
+									  <input type="checkbox" class="form-check-input" th:id="${'ingredient_' + ingredient.id}"
+									  				th:value="${ingredient.id}" th:field="*{ingredients}" >
+									  <label class="form-check-label" th:for="${'ingredient_' + ingredient.id}" th:text="${ingredient.name}"></label>
+							</div>
+						</div>
+						<!-- /Ingredients -->
 						<div class="mb-3">
 							  <label for="pizza-photo" class="form-label fw-medium">Url dell'immagine:</label>
 							  <input type="text" class="form-control" id="pizza-photo" placeholder="/images/pizza-photos/margherita-img.jpg"  
